@@ -1,34 +1,38 @@
+using AutoFixture.Xunit2;
 using FluentAssertions;
 namespace Services.Spec;
 
-public class TransactionOrchestratorSpecs:IDisposable
+public class TransactionOrchestratorSpecs 
 {
-    [Fact]
-    public void Transfer_adds_the_balance_to_the_debit_account()
+    [Theory, AutoMoqData]
+    public void Transfer_adds_the_balance_to_the_debit_account(
+        string debitAccountId,
+        [Frozen] Accounts accounts,
+        TransactionOrchestrator orchestrator,
+        TransactionQueries queries
+    )
     {
         var creaditAccount = Build.AnAccount.WithBalance(20000).Please();
-
         accounts.Add(creaditAccount);
-        var queries = new TransactionQueries();
-        var orchestrator = new TransactionOrchestrator(accounts);
-        orchestrator.Transfer(creaditAccount.Id, "456", 10000);
-        queries.GetBalanceForAccount("456")
+        orchestrator.Transfer(creaditAccount.Id, debitAccountId, 10000);
+        queries.GetBalanceForAccount(debitAccountId)
         .Should().BeEquivalentTo(new BalanceViewModel(
-            Id: "456",
+            Id: debitAccountId,
             Balance: 10000
         ));
     }
 
-    
-    [Fact]
-    public void Transfer_subtracts_the_balance_to_the_debit_account()
+
+    [Theory, AutoMoqData]
+    public void Transfer_subtracts_the_balance_to_the_debit_account(
+        [Frozen] Accounts accounts,
+        TransactionOrchestrator orchestrator,
+        TransactionQueries queries)
     {
         var creaditAccount = Build.AnAccount.WithBalance(25000).Please();
 
         accounts.Add(creaditAccount);
-        var queries = new TransactionQueries();
-        var orchestrator = new TransactionOrchestrator(accounts);
-        orchestrator.Transfer(creaditAccount.Id, "456", 10000);
+        orchestrator.Transfer(creaditAccount.Id, "dummy", 10000);
         queries.GetBalanceForAccount(creaditAccount.Id)
         .Should().BeEquivalentTo(new BalanceViewModel(
             Id: creaditAccount.Id,
@@ -36,6 +40,4 @@ public class TransactionOrchestratorSpecs:IDisposable
         ));
     }
 
-    public void Dispose() => accounts.Clear();
-    Accounts accounts = new Accounts();
 }
