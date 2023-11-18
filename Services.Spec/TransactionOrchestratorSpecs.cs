@@ -12,14 +12,13 @@ public class TransactionOrchestratorSpecs
         TransactionQueries queries
     )
     {
-        var creaditAccount = Build.AnAccount.WithBalance(20000).Please();
-        accounts.Add(creaditAccount);
-        orchestrator.Transfer(creaditAccount.Id, debitAccountId, 10000);
+        var creditAccount = Build.AnAccount.WithBalance(20000).Please();
+        accounts.Add(creditAccount);
+        
+        orchestrator.Transfer(creditAccount.Id, debitAccountId, 10000);
+        
         queries.GetBalanceForAccount(debitAccountId)
-        .Should().BeEquivalentTo(new BalanceViewModel(
-            Id: debitAccountId,
-            Balance: 10000
-        ));
+        .Should().BeEquivalentTo(new { Balance = 10000 });
     }
 
 
@@ -29,15 +28,14 @@ public class TransactionOrchestratorSpecs
         TransactionOrchestrator orchestrator,
         TransactionQueries queries)
     {
-        var creaditAccount = Build.AnAccount.WithBalance(25000).Please();
+        var creditAccount = Build.AnAccount.WithBalance(25000).Please();
 
-        accounts.Add(creaditAccount);
-        orchestrator.Transfer(creaditAccount.Id, "dummy", 10000);
-        queries.GetBalanceForAccount(creaditAccount.Id)
-        .Should().BeEquivalentTo(new BalanceViewModel(
-            Id: creaditAccount.Id,
-            Balance: 15000
-        ));
+        accounts.Add(creditAccount);
+
+        orchestrator.Transfer(creditAccount.Id, "dummy", 10000);
+
+        queries.GetBalanceForAccount(creditAccount.Id)
+        .Should().BeEquivalentTo(new { Balance = 15000 });
     }
 
 }
