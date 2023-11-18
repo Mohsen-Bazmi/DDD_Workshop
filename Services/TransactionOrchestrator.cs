@@ -30,19 +30,18 @@ public class TransactionOrchestrator
             accounts.Add(debitAccount);
         }
 
-        creditAccount.Credit(amount);
-        debitAccount.Debit(amount);
+        
 
 
         accounts.Update(creditAccount);
         accounts.Update(debitAccount);
-        transactions.Add(new Transaction(
+        var transaction = new Transaction(
             Guid.NewGuid().ToString(),
             DateTime.Now,
-            "",
-            creditAccount,
-            debitAccount
-        ));
+            ""            
+        );
+        transaction.Transfer(creditAccount, debitAccount, amount);
+        transactions.Add(transaction);
 
     }
 }
