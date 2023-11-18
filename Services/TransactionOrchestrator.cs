@@ -41,14 +41,13 @@ public class TransactionOrchestrator
 
         accounts.Update(creditAccount);
         accounts.Update(debitAccount);
-        var transactions = new Transactions();
-        transactions.Add(new Transaction{
-            CreaditAccount = creditAccount,
-            DebitAccount = debitAccount,
-            Date = DateTime.Now,
-            Description = "",
-            Id = Guid.NewGuid().ToString()
-        });
+        new Transactions().Add(new Transaction(
+            Guid.NewGuid().ToString(),
+            DateTime.Now,
+            "",
+            creditAccount,
+            debitAccount
+        ));
 
     }
 }
