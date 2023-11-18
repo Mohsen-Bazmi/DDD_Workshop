@@ -3,9 +3,11 @@
 public class TransactionOrchestrator
 {
     readonly Accounts accounts;
-    public TransactionOrchestrator(Accounts accounts)
+    readonly Transactions transactions;
+    public TransactionOrchestrator(Accounts accounts, Transactions transactions)
     {
         this.accounts = accounts;
+        this.transactions = transactions;
     }
 
     public void Transfer(
@@ -34,7 +36,7 @@ public class TransactionOrchestrator
 
         accounts.Update(creditAccount);
         accounts.Update(debitAccount);
-        new Transactions().Add(new Transaction(
+        transactions.Add(new Transaction(
             Guid.NewGuid().ToString(),
             DateTime.Now,
             "",
