@@ -15,10 +15,6 @@ public class AnAccount
      }
 
      public Account Please()
-     {
-        return new Account{
-            Id = id,
-            Balance = balance
-        };
-     }
+     => new Account(id, balance);
+     
 }

@@ -15,8 +15,7 @@ public class TransactionOrchestrator
     {
         var creditAccount = accounts.FindById(creditAccountId);
         if(creditAccount is null){
-            creditAccount = new Account();
-            creditAccount.Id = creditAccountId;
+            creditAccount = new Account(creditAccountId);
             accounts.Add(creditAccount);
         }
         
@@ -25,18 +24,12 @@ public class TransactionOrchestrator
         var debitAccount = accounts.FindById(debitAccountId);
 
         if(debitAccount is null){
-            debitAccount = new Account();
-            debitAccount.Id = debitAccountId;
-
+            debitAccount = new Account(debitAccountId);
             accounts.Add(debitAccount);
         }
 
-        if (creditAccount.Balance <= amount)
-        {
-            throw new InvalidOperationException("No enough charge");
-        }
-        creditAccount.Balance -= amount;
-        debitAccount.Balance += amount;
+        creditAccount.Credit(amount);
+        debitAccount.Debit(amount);
 
 
         accounts.Update(creditAccount);
