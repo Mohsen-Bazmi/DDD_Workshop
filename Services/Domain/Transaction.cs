@@ -14,6 +14,12 @@ public class Transaction
             DebitAccount = debitAccount;
             Amount = amount;
         }
+
+        public void Commit()
+        {
+            CreditAccount.Credit(Amount);
+            DebitAccount.Debit(Amount);
+        }
     }
 
     public string Id { get; }
@@ -39,9 +45,9 @@ public class Transaction
     public void CommitDraft()
     {
         if (draft is null) throw new InvalidOperationException("No drafts");
-        draft.CreditAccount.Credit(draft.Amount);
-        draft.DebitAccount.Debit(draft.Amount);
+        draft.Commit();
     }
+    
     public void Transfer(Account creditAccount,
                         Account debitAccount,
                         decimal amount)
