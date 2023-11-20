@@ -13,17 +13,17 @@ public class TransactionOrchestratorSpecs
     )
     {
         var creditAccount = Build.AnAccount.WithBalance(20000).Please();
+        
         accounts.Add(creditAccount);
         
         orchestrator.Transfer(creditAccount.Id, debitAccountId, 10000);
         
-        queries.GetBalanceForAccount(debitAccountId)
-        .Should().BeEquivalentTo(new { Balance = 10000 });
+        queries.GetBalanceForAccount(debitAccountId).Should().BeEquivalentTo(new { Balance = 10000 });
     }
 
 
     [Theory, AutoMoqData]
-    public void Transfer_subtracts_the_balance_to_the_debit_account(
+    public void Transfer_subtracts_the_balance_to_the_credit_account(
         [Frozen] Accounts accounts,
         TransactionOrchestrator orchestrator,
         TransactionQueries queries)
@@ -34,8 +34,7 @@ public class TransactionOrchestratorSpecs
 
         orchestrator.Transfer(creditAccount.Id, "dummy", 10000);
 
-        queries.GetBalanceForAccount(creditAccount.Id)
-        .Should().BeEquivalentTo(new { Balance = 15000 });
+        queries.GetBalanceForAccount(creditAccount.Id).Should().BeEquivalentTo(new { Balance = 15000 });
     }
 
 }
