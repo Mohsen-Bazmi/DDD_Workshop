@@ -2,23 +2,17 @@ public class Transaction
 {
     class Transfer
     {
-        public Account CreditAccount { get; }
-        public Account DebitAccount { get; }
+        public string CreditAccountId { get; }
+        public string DebitAccountId { get; }
         public decimal Amount { get; }
         public Transfer(
-            Account creditAccount,
-            Account debitAccount,
+            string creditAccountId,
+            string debitAccountId,
             decimal amount)
         {
-            CreditAccount = creditAccount;
-            DebitAccount = debitAccount;
+            CreditAccountId = creditAccountId;
+            DebitAccountId = debitAccountId;
             Amount = amount;
-        }
-
-        public void Commit()
-        {
-            CreditAccount.Credit(Amount);
-            DebitAccount.Debit(Amount);
         }
     }
 
@@ -28,34 +22,34 @@ public class Transaction
     protected Transaction(string id,
         DateTime date,
         string description,
-        Account creditAccount,
-        Account debitAccount,
+        string creditAccountId,
+        string debitAccountId,
         decimal amount)
     {
         Id = id;
         Date = date;
         Description = description;
-        draft = new Transfer(creditAccount, debitAccount, amount);
+        draft = new Transfer(creditAccountId, debitAccountId, amount);
     }
     Transfer? draft = null;
     public static Transaction Draft(
         string id,
         DateTime date,
         string description,
-        Account creditAccount,
-        Account debitAccount,
+        string creditAccountId,
+        string debitAccountId,
         decimal amount)
     => new Transaction(
         id,
         date,
         description,
-        creditAccount,
-        debitAccount,
+        creditAccountId,
+        debitAccountId,
         amount
     );
-    public void Commit()
+    public void Commit(ITransferService transferService)
     {
         if (draft is null) throw new InvalidOperationException("No drafts");
-        draft.Commit();
+        transferService.Transfer(draft.CreditAccountId, draft.DebitAccountId, draft.Amount);
     }
 }

@@ -8,6 +8,7 @@ public class TransactionOrchestratorSpecs
     public void Transfer_adds_the_balance_to_the_debit_account(
         string debitAccountId,
         [Frozen] Accounts accounts,
+        [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator orchestrator,
         TransactionQueries queries
     )
@@ -25,6 +26,7 @@ public class TransactionOrchestratorSpecs
     [Theory, AutoMoqData]
     public void Transfer_subtracts_the_balance_to_the_credit_account(
         [Frozen] Accounts accounts,
+        [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator orchestrator,
         TransactionQueries queries)
     {
