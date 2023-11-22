@@ -35,12 +35,17 @@ public class TransactionOrchestrator
 
         accounts.Update(creditAccount);
         accounts.Update(debitAccount);
-        var transaction = new Transaction(
+
+        var transaction = Transaction.Draft(
             Guid.NewGuid().ToString(),
             DateTime.Now,
-            ""            
-        );
-        transaction.Transfer(creditAccount, debitAccount, amount);
+            "Salary",
+            creditAccount, 
+            debitAccount, 
+            amount);
+
+        transaction.Commit();
+
         transactions.Add(transaction);
 
     }

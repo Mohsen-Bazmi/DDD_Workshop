@@ -1,11 +1,11 @@
 public class Transaction
 {
-    class TransactionDraft
+    class Transfer
     {
         public Account CreditAccount { get; }
         public Account DebitAccount { get; }
         public decimal Amount { get; }
-        public TransactionDraft(
+        public Transfer(
             Account creditAccount,
             Account debitAccount,
             decimal amount)
@@ -22,37 +22,40 @@ public class Transaction
         }
     }
 
-    public string Id { get; }
-    public DateTime Date { get; }
-    public string Description { get; }
-    public Transaction(string id,
-                        DateTime date,
-                        string description
-                        )
-    {
-        Id = id;
-        Date = date;
-        Description = description;
-    }
-    TransactionDraft? draft = null;
-    public void DraftTransfer(
+    public string Id { get; private set; }
+    public DateTime Date { get; private set; }
+    public string Description { get; private set; }
+    protected Transaction(string id,
+        DateTime date,
+        string description,
         Account creditAccount,
         Account debitAccount,
         decimal amount)
     {
-        draft = new TransactionDraft(creditAccount, debitAccount, amount);
+        Id = id;
+        Date = date;
+        Description = description;
+        draft = new Transfer(creditAccount, debitAccount, amount);
     }
-    public void CommitDraft()
+    Transfer? draft = null;
+    public static Transaction Draft(
+        string id,
+        DateTime date,
+        string description,
+        Account creditAccount,
+        Account debitAccount,
+        decimal amount)
+    => new Transaction(
+        id,
+        date,
+        description,
+        creditAccount,
+        debitAccount,
+        amount
+    );
+    public void Commit()
     {
         if (draft is null) throw new InvalidOperationException("No drafts");
         draft.Commit();
-    }
-    
-    public void Transfer(Account creditAccount,
-                        Account debitAccount,
-                        decimal amount)
-    {
-        creditAccount.Credit(amount);
-        debitAccount.Debit(amount);
     }
 }
