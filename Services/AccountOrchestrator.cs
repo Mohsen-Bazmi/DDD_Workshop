@@ -1,12 +1,14 @@
 public class AccountOrchestrator
 {
-    private Accounts accounts;
+    private Accounts _accounts;
     public AccountOrchestrator(Accounts accounts)
     {
-        this.accounts = accounts;
+        _accounts = accounts;
     }
-    public void OpenAccount(string accountId, decimal initialBalance)
+    public void OpenAccount(
+        string accountId,
+        decimal initialBalance)
     {
-        accounts.Add(new Account(accountId, initialBalance));
+        _accounts.Add(new Account(accountId, initialBalance));
     }
 }

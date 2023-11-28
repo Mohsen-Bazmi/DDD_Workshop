@@ -2,28 +2,42 @@
 
 public class TransactionOrchestrator
 {
-    readonly Transactions transactions;
-    readonly ITransferService transferService;
-    public TransactionOrchestrator(Transactions transactions, ITransferService transferService)
+    readonly Transactions _transactions;
+    readonly ITransferService _transferService;
+    public TransactionOrchestrator(
+        Transactions transactions, 
+        ITransferService transferService)
     {
-        this.transactions = transactions;
-        this.transferService = transferService;
+        _transactions = transactions;
+        _transferService = transferService;
     }
 
-    public void DraftTransfer(string transactionId, string creditAccountId, string debitAccountId, decimal amount, DateTime transactionDate, string description)
+    public void DraftTransfer(
+        string transactionId,
+        TransactionAccountDetail accountDetail,
+        DateTime transactionDate,
+        string description)
     {
-        transactions.Add(Transaction.Draft(transactionId, transactionDate, description, creditAccountId, debitAccountId, amount));
+        _transactions.Add(
+            Transaction.Draft(transactionId, transactionDate, description, accountDetail));
     }
 
     public void CommitTransfer(
         string transactionId)
     {
-        var draft = transactions.FindById(transactionId);
+        var draft = _transactions.FindById(transactionId);
+        StopIfNoTransactionDraftExist(transactionId, draft);
 
-        if(draft is null) throw new InvalidOperationException($"No transaction drafts with the id: {transactionId}");
-        
-        draft.Commit(transferService);
+        draft!.Commit(_transferService);
 
-        transactions.Update(draft);
+        _transactions.Update(draft);
+    }
+
+    private static void StopIfNoTransactionDraftExist(
+        string transactionId,
+        Transaction? draft)
+    {
+        if (draft is null)
+            throw new InvalidOperationException($"No transaction drafts with the id: {transactionId}");
     }
 }

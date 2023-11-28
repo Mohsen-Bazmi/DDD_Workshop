@@ -2,18 +2,19 @@
 
 public class Transactions
 {
-    public List<Transaction> records { get; set; } = new();
+    public List<Transaction> _records { get; set; } = new();
     public void Add(Transaction transaction)
-    => records.Add(transaction);
+    => _records.Add(transaction);
 
     public Transaction? FindById(string id)
-    => All().FirstOrDefault(tx => tx.Id == id);
+    => _records.FirstOrDefault(tx => tx.Id == id);
 
     public IEnumerable<Transaction> All()
-    => records;
+    => _records;
 
     public void Update(Transaction draft)
     {
-
+        _records.RemoveAll(_=>_.Id == draft.Id);
+        _records.Add(draft);
     }
 }

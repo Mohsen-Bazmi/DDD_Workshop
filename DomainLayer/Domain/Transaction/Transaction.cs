@@ -7,13 +7,10 @@ public enum TransferStatus
 
 public class Transaction
 {
-
-
+    public string Id { get; private set; }
     public string CreditAccountId { get; }
     public string DebitAccountId { get; }
     public Money Amount { get; }
-
-    public string Id { get; private set; }
     public DateTime Date { get; private set; }
     public string Description { get; private set; }
     public TransferStatus Status { get; private set; } = TransferStatus.Draft;
@@ -21,37 +18,38 @@ public class Transaction
     protected Transaction(string id,
         DateTime date,
         string description,
-        string creditAccountId,
-        string debitAccountId,
-        Money amount)
+        TransactionAccountDetail accountDetail)
     {
         Id = id;
         Date = date;
         Description = description;
-        CreditAccountId = creditAccountId;
-        DebitAccountId = debitAccountId;
-        Amount = amount;
+        CreditAccountId = accountDetail.CreditAccountId;
+        DebitAccountId = accountDetail.DebitAccountId;
+        Amount = accountDetail.Amount;
     }
 
     public static Transaction Draft(
         string id,
         DateTime date,
         string description,
-        string creditAccountId,
-        string debitAccountId,
-        Money amount)
+        TransactionAccountDetail accountDetail)
     => new Transaction(
         id,
         date,
         description,
-        creditAccountId,
-        debitAccountId,
-        amount
-    );
+        accountDetail);
 
     public void Commit(ITransferService transferService)
     {
-        transferService.Transfer(CreditAccountId, DebitAccountId, Amount);
+        var TransactionDetail =
+            new TransactionAccountDetail(
+                CreditAccountId,
+                DebitAccountId,
+                Amount);
+
+        transferService
+            .Transfer(TransactionDetail);
+
         Status = TransferStatus.Commit;
     }
 }

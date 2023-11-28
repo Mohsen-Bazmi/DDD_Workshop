@@ -1,32 +1,43 @@
 public class TransferService : ITransferService
 {
-    Accounts accounts;
+    Accounts _accounts;
 
     public TransferService(Accounts accounts)
     {
-        this.accounts = accounts;
+        _accounts = accounts;
     }
 
-    public void Transfer(string creditAccountId, string debitAccountId, Money amount)
+    public void Transfer(TransactionAccountDetail accountDetail)
     {
-        var creditAccount = accounts.FindById(creditAccountId);
-        var debitAccount = accounts.FindById(debitAccountId);
+        var creditAccount = _accounts.FindById(accountDetail.CreditAccountId);
+        StopIfCreditAcccountNotExist(accountDetail, creditAccount);
+        creditAccount!.Credit(accountDetail.Amount);
+        _accounts.Update(creditAccount);
 
+        var debitAccount = _accounts.FindById(accountDetail.DebitAccountId);
+        debitAccount = CreateDebitAccountIfNotExist(accountDetail, debitAccount);
+        debitAccount!.Debit(accountDetail.Amount);
+        _accounts.Update(debitAccount!);
+    }
+
+    private static void StopIfCreditAcccountNotExist(
+        TransactionAccountDetail accountDetail,
+        Account? creditAccount)
+    {
+        if (creditAccount is null)
+            throw new InvalidOperationException($"Credit account with the id '{accountDetail.CreditAccountId}' not found.");
+    }
+
+    private Account CreateDebitAccountIfNotExist(
+        TransactionAccountDetail accountDetail,
+        Account? debitAccount)
+    {
         if (debitAccount is null)
         {
-            debitAccount = new Account(debitAccountId, 0);
-            accounts.Add(debitAccount);
+            var newDebitAccount = new Account(accountDetail.DebitAccountId, 0);
+            _accounts.Add(newDebitAccount!);
+            return newDebitAccount;
         }
-
-        if(creditAccount is null) throw new InvalidOperationException($"Credit account with the id '{creditAccountId}' not found.");
-        // if(debitAccount is null) throw new InvalidOperationException($"Debit account with the id '{debitAccountId}' not found.");
-
-        creditAccount.Credit(amount);
-        debitAccount.Debit(amount);
-
-        accounts.Update(creditAccount);
-        accounts.Update(debitAccount);
-
-
+        return debitAccount;
     }
 }
