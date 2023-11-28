@@ -1,6 +1,7 @@
 public class Money
 {
     public decimal Value { get; }
+
     public Money(decimal amount)
     {
         if (amount < 0) throw new InvalidOperationException("Money cannot be negative.");
