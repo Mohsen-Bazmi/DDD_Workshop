@@ -10,13 +10,13 @@ public class TransactionOrchestrator
         this.transferService = transferService;
     }
 
-    public void DraftTransfer(string transactionId, string creditAccountId, string debitAccountId, decimal amount, DateTime transactionDate)
+    public void DraftTransfer(TransactionId transactionId, AccountId creditAccountId, AccountId debitAccountId, Money amount, DateTime transactionDate)
     {
         transactions.Add(Transaction.Draft(transactionId, transactionDate, creditAccountId, debitAccountId, amount));
     }
 
     public void CommitTransfer(
-        string transactionId)
+        TransactionId transactionId)
     {
         var draft = transactions.FindById(transactionId);
 

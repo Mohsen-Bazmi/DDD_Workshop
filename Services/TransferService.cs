@@ -7,7 +7,7 @@ public class TransferService : ITransferService
         this.accounts = accounts;
     }
 
-    public void Transfer(string creditAccountId, string debitAccountId, Money amount)
+    public void Transfer(AccountId creditAccountId, AccountId debitAccountId, Money amount)
     {
         var creditAccount = accounts.FindById(creditAccountId);
         var debitAccount = accounts.FindById(debitAccountId);

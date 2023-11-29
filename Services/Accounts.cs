@@ -3,7 +3,7 @@ public class Accounts
 {
     
     readonly List<Account> records = new List<Account>();
-    public Account? FindById(string id)
+    public Account? FindById(AccountId id)
     {
         return records.FirstOrDefault(a => a.Id == id);
     }
