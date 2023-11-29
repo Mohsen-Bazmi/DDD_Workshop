@@ -20,30 +20,32 @@ public class Transaction
 
     protected Transaction(string id,
         DateTime date,
-        string description,
+
         string creditAccountId,
         string debitAccountId,
         Money amount)
     {
         Id = id;
         Date = date;
-        Description = description;
+
         CreditAccountId = creditAccountId;
         DebitAccountId = debitAccountId;
         Amount = amount;
     }
 
+    public void Describe(string description)
+    => Description = description;
+
+
     public static Transaction Draft(
         string id,
         DateTime date,
-        string description,
         string creditAccountId,
         string debitAccountId,
         Money amount)
     => new Transaction(
         id,
         date,
-        description,
         creditAccountId,
         debitAccountId,
         amount
