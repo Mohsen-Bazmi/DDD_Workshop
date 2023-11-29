@@ -28,4 +28,8 @@ public class Money
     public static implicit operator Money(decimal amount)
     => new Money(amount);
 
+    public Money Add(Money amountToAdd)
+    => new Money(Value + amountToAdd.Value);
+
+
 }
