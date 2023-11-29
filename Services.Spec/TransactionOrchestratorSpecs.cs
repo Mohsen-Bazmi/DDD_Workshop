@@ -6,31 +6,38 @@ public class TransactionOrchestratorSpecs
 {
     [Theory, AutoMoqData]
     public void Transfer_adds_the_balance_to_the_debit_account(
-        string debitAccountId,
-        string creditAccountId,
         [Frozen] Accounts __,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator sut,
         AccountOrchestrator accountOrchestrator,
         AccountQueries queries,
         string transactionId,
-        decimal amount,
         DateTime now,
+        decimal amount,
         string description
     )
     {
         amount = Math.Abs(amount);
+        var accountDetail =
+            new TransactionAccountDetail(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                amount);
 
-        accountOrchestrator.OpenAccount(creditAccountId, amount + 20000);
+        accountOrchestrator.OpenAccount(
+            accountDetail.CreditAccountId,
+            accountDetail.Amount.Value + 20000);
 
-        sut.DraftTransfer(transactionId,
-            creditAccountId, debitAccountId,
-            amount, now, description);
+        sut.DraftTransfer(
+            transactionId,
+            accountDetail,
+            now,
+            description);
 
         sut.CommitTransfer(transactionId);
 
-        queries.GetBalanceForAccount(debitAccountId).Should()
-            .BeEquivalentTo(new { Balance = amount });
+        queries.GetBalanceForAccount(accountDetail.DebitAccountId).Should()
+            .BeEquivalentTo(new { Balance = accountDetail.Amount.Value });
     }
 
 
@@ -42,20 +49,24 @@ public class TransactionOrchestratorSpecs
         AccountOrchestrator accountService,
         AccountQueries queries,
         string transactionId,
-        decimal amount,
         DateTime now,
         string description,
-        string debitAccountId
-        )
+        decimal amount)
     {
+
         amount = Math.Abs(amount);
-        var creditAccount = Build.AnAccount.WithBalance(amount + 25000).Please();
+
+        var creditAccount = Build.AnAccount.WithBalance(+25000 + amount).Please();
+        var accountDetail =
+            new TransactionAccountDetail(
+                creditAccount.Id,
+                Guid.NewGuid().ToString(),
+                amount);
 
         accountService.OpenAccount(creditAccount.Id, creditAccount.Balance.Value);
 
         sut.DraftTransfer(transactionId,
-            creditAccount.Id, debitAccountId,
-            amount, now, description);
+            accountDetail, now, description);
 
         sut.CommitTransfer(transactionId);
 
@@ -70,20 +81,24 @@ public class TransactionOrchestratorSpecs
         TransactionQueries queries,
         DateTime now,
         string description,
-        string creditAccountId,
-        string debitAccountId,
         decimal amount
     )
     {
         amount = Math.Abs(amount);
+        var accountDetail =
+            new TransactionAccountDetail(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                amount);
 
-        sut.DraftTransfer("transaction Id", creditAccountId, debitAccountId, amount, now, description);
+        sut.DraftTransfer("transaction Id", accountDetail, now, description);
 
-        queries.AllDrafts().Should().Contain(new TransferDraftViewModel(
-            creditAccountId,
-            debitAccountId,
-            amount,
-            now
+        queries.AllDrafts().Should().Contain(
+            new TransferDraftViewModel(
+                accountDetail.CreditAccountId,
+                accountDetail.DebitAccountId,
+                accountDetail.Amount.Value,
+                now
         ));
 
     }
