@@ -4,7 +4,7 @@ namespace Services.Spec;
 
 public class TransactionOrchestratorSpecs
 {
-    [Theory, AutoMoqData]
+    [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Transfer_adds_the_balance_to_the_debit_account(
         string debitAccountId,
         string creditAccountId,
@@ -33,7 +33,7 @@ public class TransactionOrchestratorSpecs
     }
 
 
-    [Theory, AutoMoqData]
+    [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Transfer_subtracts_the_balance_from_the_credit_account(
         [Frozen] Accounts __,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
@@ -61,7 +61,7 @@ public class TransactionOrchestratorSpecs
             .BeEquivalentTo(new { Balance = 25000 });
     }
 
-    [Theory, AutoMoqData]
+    [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Drafts_a_new_transaction(
         [Frozen] Transactions _,
         TransactionOrchestrator sut,
