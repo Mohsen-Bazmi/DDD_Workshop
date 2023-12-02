@@ -9,6 +9,7 @@ public class TransactionOrchestratorSpecs
         string debitAccountId,
         string creditAccountId,
         [Frozen] Accounts __,
+        [Frozen] Transactions ___,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator sut,
         AccountOrchestrator accountOrchestrator,
@@ -36,6 +37,7 @@ public class TransactionOrchestratorSpecs
     [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Transfer_subtracts_the_balance_from_the_credit_account(
         [Frozen] Accounts __,
+        [Frozen] Transactions ___,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator sut,
         AccountOrchestrator accountService,
@@ -49,21 +51,22 @@ public class TransactionOrchestratorSpecs
         amount = Math.Abs(amount);
         var creditAccount = Build.AnAccount.WithBalance(amount + 25000).Please();
 
-        accountService.OpenAccount(creditAccount.Id, creditAccount.Balance.Value);
+        accountService.OpenAccount(creditAccount.Id.Id, creditAccount.Balance.Value);
 
         sut.DraftTransfer(transactionId,
-            creditAccount.Id, debitAccountId,
+            creditAccount.Id.Id, debitAccountId,
             amount, now);
 
         sut.CommitTransfer(transactionId);
 
-        queries.GetBalanceForAccount(creditAccount.Id).Should()
+        queries.GetBalanceForAccount(creditAccount.Id.Id).Should()
             .BeEquivalentTo(new { Balance = 25000 });
     }
 
     [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Drafts_a_new_transaction(
         [Frozen] Transactions _,
+        [Frozen] Transactions ___,
         TransactionOrchestrator sut,
         TransactionQueries queries,
         DateTime now,

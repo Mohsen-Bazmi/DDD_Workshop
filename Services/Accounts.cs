@@ -1,11 +1,11 @@
 
 public class Accounts
 {
-    
+
     readonly List<Account> records = new List<Account>();
     public Account? FindById(AccountId id)
     {
-        return records.FirstOrDefault(a => a.Id == id);
+        return records.FirstOrDefault(a => a.Id.Id == id.Id);
     }
 
     public void Update(Account account)
