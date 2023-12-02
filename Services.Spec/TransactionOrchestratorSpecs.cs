@@ -8,8 +8,8 @@ public class TransactionOrchestratorSpecs
     public void Transfer_adds_the_balance_to_the_debit_account(
         string debitAccountId,
         string creditAccountId,
-        [Frozen] Accounts __,
-        [Frozen] Transactions ___,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryAccounts __,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryTransactions ___,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator sut,
         AccountOrchestrator accountOrchestrator,
@@ -36,8 +36,8 @@ public class TransactionOrchestratorSpecs
 
     [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Transfer_subtracts_the_balance_from_the_credit_account(
-        [Frozen] Accounts __,
-        [Frozen] Transactions ___,
+       [Frozen(Matching.ImplementedInterfaces)] InMemoryAccounts __,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryTransactions ___,
         [Frozen(Matching.ImplementedInterfaces)] TransferService _,
         TransactionOrchestrator sut,
         AccountOrchestrator accountService,
@@ -65,8 +65,8 @@ public class TransactionOrchestratorSpecs
 
     [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Drafts_a_new_transaction(
-        [Frozen] Transactions _,
-        [Frozen] Transactions ___,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryAccounts __,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryTransactions ___,
         TransactionOrchestrator sut,
         TransactionQueries queries,
         DateTime now,

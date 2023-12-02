@@ -5,7 +5,7 @@ public class AccountOrchestratorSpec
 {
     [Theory, AutoMoqDataAttributeWithPositiveDecimals]
     public void Opens_a_new_account(string accountId, decimal balance,
-        [Frozen] Accounts _,
+        [Frozen(Matching.ImplementedInterfaces)] InMemoryAccounts __,
         AccountQueries queries,
         AccountOrchestrator accountOrchestrator
     )

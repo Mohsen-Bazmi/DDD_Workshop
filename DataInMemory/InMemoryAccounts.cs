@@ -1,5 +1,5 @@
 
-public class Accounts
+public class InMemoryAccounts : Accounts
 {
 
     readonly List<Account> records = new List<Account>();
@@ -18,5 +18,4 @@ public class Accounts
     {
         records.Add(account);
     }
-    public void Clear() => records.Clear();
 }

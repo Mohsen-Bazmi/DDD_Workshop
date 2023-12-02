@@ -1,6 +1,6 @@
 
 
-public class Transactions
+public class InMemoryTransactions : Transactions
 {
     public List<Transaction> records { get; set; } = new();
     public void Add(Transaction transaction)
