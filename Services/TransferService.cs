@@ -7,8 +7,12 @@ public class TransferService : ITransferService
         this.accounts = accounts;
     }
 
-    public void Transfer(AccountId creditAccountId, AccountId debitAccountId, Money amount)
+    public void Transfer(TransferRequest transferRequest, DateTime dateTime)
     {
+        var creditAccountId = transferRequest.Parties.CreditAccountId;
+        var debitAccountId = transferRequest.Parties.DebitAccountId;
+        var amount = transferRequest.Amount;
+        
         var creditAccount = accounts.FindById(creditAccountId);
         var debitAccount = accounts.FindById(debitAccountId);
 
@@ -18,7 +22,7 @@ public class TransferService : ITransferService
             accounts.Add(debitAccount);
         }
 
-        if(creditAccount is null) throw new InvalidOperationException($"Credit account with the id '{creditAccountId}' not found.");
+        if (creditAccount is null) throw new InvalidOperationException($"Credit account with the id '{creditAccountId}' not found.");
         // if(debitAccount is null) throw new InvalidOperationException($"Debit account with the id '{debitAccountId}' not found.");
 
         creditAccount.Credit(amount);

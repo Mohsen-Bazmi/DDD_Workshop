@@ -15,8 +15,7 @@ public class TransactionOrchestratorSpecs
         AccountOrchestrator accountOrchestrator,
         AccountQueries queries,
         string transactionId,
-        decimal amount,
-        DateTime now
+        decimal amount
     )
     {
         amount = Math.Abs(amount);
@@ -25,7 +24,7 @@ public class TransactionOrchestratorSpecs
 
         sut.DraftTransfer(transactionId,
             creditAccountId, debitAccountId,
-            amount, now);
+            amount);
 
         sut.CommitTransfer(transactionId);
 
@@ -44,7 +43,6 @@ public class TransactionOrchestratorSpecs
         AccountQueries queries,
         string transactionId,
         decimal amount,
-        DateTime now,
         string debitAccountId
         )
     {
@@ -55,7 +53,7 @@ public class TransactionOrchestratorSpecs
 
         sut.DraftTransfer(transactionId,
             creditAccount.Id.Id, debitAccountId,
-            amount, now);
+            amount);
 
         sut.CommitTransfer(transactionId);
 
@@ -77,13 +75,12 @@ public class TransactionOrchestratorSpecs
     {
         amount = Math.Abs(amount);
 
-        sut.DraftTransfer("transaction Id", creditAccountId, debitAccountId, amount, now);
+        sut.DraftTransfer("transaction Id", creditAccountId, debitAccountId, amount);
 
         queries.AllDrafts().Should().Contain(new TransferDraftViewModel(
             creditAccountId,
             debitAccountId,
-            amount,
-            now
+            amount
         ));
 
     }

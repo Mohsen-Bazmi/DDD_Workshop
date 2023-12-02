@@ -1,27 +1,18 @@
 
 public class Transaction
 {
-    public AccountId CreditAccountId { get; }
-    public AccountId DebitAccountId { get; }
-    public Money Amount { get; }
+    public TransferRequest TransferRequest { get; }
 
     public TransactionId Id { get; private set; }
     public DateTime Date { get; private set; }
-    public string Description { get; private set; }
+    public string Description { get; private set; } = string.Empty;
     public TransferStatus Status { get; private set; } = TransferStatus.Draft;
 
     protected Transaction(TransactionId id,
-        DateTime date,
-        AccountId creditAccountId,
-        AccountId debitAccountId,
-        Money amount)
+        TransferRequest transferRequest)
     {
         Id = id;
-        Date = date;
-
-        CreditAccountId = creditAccountId;
-        DebitAccountId = debitAccountId;
-        Amount = amount;
+        TransferRequest = transferRequest;
     }
 
     public void Describe(string description)
@@ -30,21 +21,14 @@ public class Transaction
 
     public static Transaction Draft(
         TransactionId id,
-        DateTime date,
-        AccountId creditAccountId,
-        AccountId debitAccountId,
-        Money amount)
+        TransferRequest transferRequest)
     => new Transaction(
-        id,
-        date,
-        creditAccountId,
-        debitAccountId,
-        amount
+        id, transferRequest
     );
 
-    public void Commit(ITransferService transferService)
+    public void Commit(DateTime dateTime, ITransferService transferService)
     {
-        transferService.Transfer(CreditAccountId, DebitAccountId, Amount);
+        transferService.Transfer(TransferRequest, dateTime);
         Status = TransferStatus.Commit;
     }
 }
