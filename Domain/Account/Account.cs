@@ -11,7 +11,7 @@ public class Account
     public void Credit(Money amount)
     {
         if (Balance <= amount)
-            throw new InvalidOperationException("No enough charge");
+            throw new NotEnoughChargeException();
 
         Balance -= amount;
     }
