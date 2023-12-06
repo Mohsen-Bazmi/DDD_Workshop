@@ -8,16 +8,27 @@ public class Account
     public AccountId Id { get; }
     public Money Balance { get; private set; }
 
-    public void Credit(Money amount)
+    public Exception? Credit(Money amount)
     {
-        if (Balance <= amount)
-            throw new NotEnoughChargeException();
+        if (Balance <= amount) throw new NotEnoughChargeException();
 
-        Balance -= amount;
+        var (balance, error) = Balance - amount;
+
+        if (balance is null) return error;
+
+        Balance = balance;
+
+        return null;
     }
 
-    public void Debit(Money amount)
+    public Exception? Debit(Money amount)
     {
-        Balance += amount;
+        var (balance, error) = Balance + amount;
+        
+        if (balance is null) return error;
+
+        Balance = balance;
+
+        return null;
     }
 }
