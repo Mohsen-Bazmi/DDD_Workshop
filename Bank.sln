@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInMemory", "DataInMemory\DataInMemory.csproj", "{766E7891-19A8-46CE-958F-60B723A5A943}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalLibrary", "FunctionalLibrary\FunctionalLibrary.csproj", "{6E346550-E5E8-4735-891A-BD4175AF13F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{766E7891-19A8-46CE-958F-60B723A5A943}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{766E7891-19A8-46CE-958F-60B723A5A943}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{766E7891-19A8-46CE-958F-60B723A5A943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E346550-E5E8-4735-891A-BD4175AF13F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E346550-E5E8-4735-891A-BD4175AF13F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E346550-E5E8-4735-891A-BD4175AF13F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E346550-E5E8-4735-891A-BD4175AF13F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

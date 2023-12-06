@@ -1,3 +1,5 @@
+using FunctionalLibrary;
+
 public class AccountOrchestrator
 {
     private Accounts accounts;
@@ -5,8 +7,8 @@ public class AccountOrchestrator
     {
         this.accounts = accounts;
     }
-    public void OpenAccount(string accountId, decimal initialBalance)
-    {
-        accounts.Add(new Account(accountId, initialBalance));
-    }
+    public Exception? OpenAccount(string accountId, decimal initialBalance)
+    => Money.Create(initialBalance)
+            .Select(l => accounts.Add(new Account(accountId, l)));
+
 }
