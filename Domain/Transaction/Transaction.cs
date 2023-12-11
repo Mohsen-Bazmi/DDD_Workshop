@@ -2,13 +2,10 @@
 public class Transaction
 {
     public TransferRequest TransferRequest { get; }
-    Queue<object> newEvents = new();
-    public IEnumerable<object> NewEvents => newEvents;
-
-
-    public AccountId CreditAccountId { get; }
-    public AccountId DebitAccountId { get; }
-    public Money Amount { get; }
+    Queue<IDomainEvent> newEvents = new();
+    public IEnumerable<IDomainEvent> NewEvents => newEvents;
+    public void ClearEvents()
+    => newEvents.Clear();
 
     public TransactionId Id { get; private set; }
     public DateTime Date { get; private set; }
@@ -37,9 +34,13 @@ public class Transaction
     {
         transferService.Transfer(TransferRequest, dateTime);
         Status = TransferStatus.Commit;
-        
-        newEvents.Enqueue(new {
-            CreditAccountId, DebitAccountId, Amount
-        });
+
+        var transferCommited = new TransactionCommited(
+            TransferRequest.Parties.CreditAccountId.Id,
+             TransferRequest.Parties.DebitAccountId.Id,
+              TransferRequest.Amount.Value
+        );
+
+        newEvents.Enqueue(transferCommited);
     }
 }

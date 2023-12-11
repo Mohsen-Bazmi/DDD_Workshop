@@ -5,8 +5,8 @@ public class AccountOrchestrator
     {
         this.accounts = accounts;
     }
-    public void OpenAccount(string accountId, decimal initialBalance)
+    public void OpenAccount(OpenAccountCommand command)
     {
-        accounts.Add(new Account(accountId, initialBalance));
+        accounts.Add(new Account(command.AccountId, command.InitialBalance));
     }
 }

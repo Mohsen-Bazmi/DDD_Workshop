@@ -10,7 +10,7 @@ public class AccountOrchestratorSpec
         AccountOrchestrator accountOrchestrator
     )
     {
-        accountOrchestrator.OpenAccount(accountId, Math.Abs(balance));
+        accountOrchestrator.OpenAccount(new OpenAccountCommand(accountId, Math.Abs(balance)));
         queries.GetBalanceForAccount(accountId).Should().BeEquivalentTo(new { Balance = Math.Abs(balance) });
     }
 }

@@ -13,8 +13,8 @@ public class InMemoryTransactions : Transactions
     public List<Transaction> records { get; set; } = new();
     public void Add(Transaction transaction)
     {
-        records.Add(transaction);
         EmitEvents(transaction);
+        records.Add(transaction);
         //SaveChanges
     }
 

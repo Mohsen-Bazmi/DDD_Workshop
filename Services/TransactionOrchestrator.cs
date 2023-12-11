@@ -12,20 +12,19 @@ public class TransactionOrchestrator
         this.dateTimeService = dateTimeService;
     }
 
-    public void DraftTransfer(string transactionId, string creditAccountId, string debitAccountId, decimal amount)
+    public void DraftTransfer(DraftTransferCommand command)
     {
-        var parties = new TransactionParties(creditAccountId, debitAccountId);
-        var request = new TransferRequest(parties, amount);
-        var draft = Transaction.Draft(transactionId, request);
+        var parties = new TransactionParties(command.CreditAccountId, command.DebitAccountId);
+        var request = new TransferRequest(parties, command.Amount);
+        var draft = Transaction.Draft(command.TransactionId, request);
         transactions.Add(draft);
     }
 
-    public void CommitTransfer(
-        string transactionId)
+    public void CommitTransfer(CommitTransferCommand command)
     {
-        var draft = transactions.FindById(transactionId);
+        var draft = transactions.FindById(command.TransactionId);
 
-        if (draft is null) throw new InvalidOperationException($"No transaction drafts with the id: {transactionId}");
+        if (draft is null) throw new InvalidOperationException($"No transaction drafts with the id: {command.TransactionId}");
 
         draft.Commit(dateTimeService.Now, transferService);
 

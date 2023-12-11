@@ -20,13 +20,13 @@ public class TransactionOrchestratorSpecs
     {
         amount = Math.Abs(amount);
 
-        accountOrchestrator.OpenAccount(creditAccountId, amount + 20000);
+        accountOrchestrator.OpenAccount(new OpenAccountCommand(creditAccountId, amount + 20000));
 
-        sut.DraftTransfer(transactionId,
+        sut.DraftTransfer(new DraftTransferCommand(transactionId,
             creditAccountId, debitAccountId,
-            amount);
+            amount));
 
-        sut.CommitTransfer(transactionId);
+        sut.CommitTransfer(new CommitTransferCommand(transactionId));
 
         queries.GetBalanceForAccount(debitAccountId).Should()
             .BeEquivalentTo(new { Balance = amount });
@@ -49,13 +49,13 @@ public class TransactionOrchestratorSpecs
         amount = Math.Abs(amount);
         var creditAccount = Build.AnAccount.WithBalance(amount + 25000).Please();
 
-        accountService.OpenAccount(creditAccount.Id.Id, creditAccount.Balance.Value);
+        accountService.OpenAccount(new OpenAccountCommand(creditAccount.Id.Id, creditAccount.Balance.Value));
 
-        sut.DraftTransfer(transactionId,
+        sut.DraftTransfer(new DraftTransferCommand(transactionId,
             creditAccount.Id.Id, debitAccountId,
-            amount);
+            amount));
 
-        sut.CommitTransfer(transactionId);
+        sut.CommitTransfer(new CommitTransferCommand(transactionId));
 
         queries.GetBalanceForAccount(creditAccount.Id.Id).Should()
             .BeEquivalentTo(new { Balance = 25000 });
@@ -67,7 +67,6 @@ public class TransactionOrchestratorSpecs
         [Frozen(Matching.ImplementedInterfaces)] InMemoryTransactions ___,
         TransactionOrchestrator sut,
         TransactionQueries queries,
-        DateTime now,
         string creditAccountId,
         string debitAccountId,
         decimal amount
@@ -75,7 +74,7 @@ public class TransactionOrchestratorSpecs
     {
         amount = Math.Abs(amount);
 
-        sut.DraftTransfer("transaction Id", creditAccountId, debitAccountId, amount);
+        sut.DraftTransfer(new DraftTransferCommand("transaction Id", creditAccountId, debitAccountId, amount));
 
         queries.AllDrafts().Should().Contain(new TransferDraftViewModel(
             creditAccountId,
