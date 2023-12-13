@@ -13,7 +13,7 @@ public class InMemoryTransactions : Transactions
     public List<Transaction> records { get; set; } = new();
     public void Add(Transaction transaction)
     {
-        EmitEvents(transaction);
+        DispatchEventsOf(transaction);
         records.Add(transaction);
         //SaveChanges
     }
@@ -26,10 +26,10 @@ public class InMemoryTransactions : Transactions
 
     public void Update(Transaction transaction)
     {
-        EmitEvents(transaction);
+        DispatchEventsOf(transaction);
     }
 
-    public void EmitEvents(Transaction transaction)
+    public void DispatchEventsOf(Transaction transaction)
     {
         messageDispatcher.Dispatch(transaction.NewEvents);
         transaction.ClearEvents();

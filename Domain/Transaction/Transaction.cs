@@ -1,12 +1,7 @@
 
-public class Transaction
+public class Transaction : AggregateRoot
 {
     public TransferRequest TransferRequest { get; }
-    Queue<IDomainEvent> newEvents = new();
-    public IEnumerable<IDomainEvent> NewEvents => newEvents;
-    public void ClearEvents()
-    => newEvents.Clear();
-
     public TransactionId Id { get; private set; }
     public DateTime Date { get; private set; }
     public string Description { get; private set; } = string.Empty;
@@ -41,6 +36,6 @@ public class Transaction
               TransferRequest.Amount.Value
         );
 
-        newEvents.Enqueue(transferCommited);
+        AppendEvent(transferCommited);
     }
 }

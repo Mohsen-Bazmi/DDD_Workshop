@@ -1,4 +1,4 @@
-public class Account
+public class Account : AggregateRoot
 {
     public Account(AccountId id, Money initialBalance)
     {
