@@ -12,6 +12,11 @@ public class TransactionOrchestrator
         this.dateTimeService = dateTimeService;
     }
 
+    //Aspect Oriented Programming
+    //[Transaction]
+    //[Retry]
+    //[LogOnException]
+    //[MultiTenant]
     public void DraftTransfer(DraftTransferCommand command)
     {
         var parties = new TransactionParties(command.CreditAccountId, command.DebitAccountId);

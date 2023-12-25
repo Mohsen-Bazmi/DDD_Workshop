@@ -7,6 +7,7 @@ public class EventAuditor : IHandleMessage<TransactionCommited>, IHandleMessage<
     {
         if (transactionOrchestrator is null) throw new NullReferenceException("transactionOrchestrator is null");
     }
+    
     public void Handle(TransactionCommited @event)
     {
         Console.WriteLine("Handler1");

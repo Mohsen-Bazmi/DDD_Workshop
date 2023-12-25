@@ -8,7 +8,7 @@ public static class BusinessServicesRegisterer
 {
     public static void RegisterRepositories(this IServiceCollection services)
     {
-        services.AddSingleton<IMessageDispatcher, MessageDispatcher>(s => new MessageDispatcher(s, typeof(IHandleMessage<>), "Handle", Assembly.Load("Services")));
+        services.AddSingleton<IMessageDispatcher, MessageDispatcher>(s => new MessageDispatcher(s, typeof(IHandleMessage<>), "Handle", Assembly.Load("Services"), new Retry()));
         services.AddSingleton<Accounts, InMemoryAccounts>();
         services.AddSingleton<Transactions, InMemoryTransactions>();
     }

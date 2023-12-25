@@ -31,7 +31,7 @@ public class InMemoryTransactions : Transactions
 
     public void DispatchEventsOf(Transaction transaction)
     {
-        messageDispatcher.Dispatch(transaction.NewEvents);
+        messageDispatcher.Publish(transaction.NewEvents);
         transaction.ClearEvents();
     }
 }

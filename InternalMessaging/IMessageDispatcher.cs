@@ -4,5 +4,5 @@ namespace InternalMessaging;
 
 public interface IMessageDispatcher
 {
-    void Dispatch(IEnumerable message);
+    void Publish(IEnumerable message);
 }
