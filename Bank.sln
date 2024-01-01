@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalMessaging", "Intern
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{B0310B12-F399-4858-A4F1-3CE63E4B0889}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataInMsSql", "DataInMsSql\DataInMsSql.csproj", "{673D22F0-7A6C-4A44-B95E-27BD346CF5E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{B0310B12-F399-4858-A4F1-3CE63E4B0889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0310B12-F399-4858-A4F1-3CE63E4B0889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0310B12-F399-4858-A4F1-3CE63E4B0889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{673D22F0-7A6C-4A44-B95E-27BD346CF5E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{673D22F0-7A6C-4A44-B95E-27BD346CF5E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{673D22F0-7A6C-4A44-B95E-27BD346CF5E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{673D22F0-7A6C-4A44-B95E-27BD346CF5E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,3 +1,4 @@
+
 public class Account : AggregateRoot
 {
     public Account(AccountId id, Money initialBalance)
@@ -8,7 +9,7 @@ public class Account : AggregateRoot
     public AccountId Id { get; }
     public Money Balance { get; private set; }
 
-    public void Credit(Money amount)
+    public void Debit(Money amount)
     {
         if (Balance <= amount)
             throw new NotEnoughChargeException();
@@ -16,7 +17,7 @@ public class Account : AggregateRoot
         Balance -= amount;
     }
 
-    public void Debit(Money amount)
+    public void Credit(Money amount)
     {
         Balance += amount;
     }

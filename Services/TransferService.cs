@@ -25,8 +25,8 @@ public class TransferService : ITransferService
         if (creditAccount is null) throw new InvalidOperationException($"Credit account with the id '{creditAccountId}' not found.");
         // if(debitAccount is null) throw new InvalidOperationException($"Debit account with the id '{debitAccountId}' not found.");
 
-        creditAccount.Credit(amount);
-        debitAccount.Debit(amount);
+        creditAccount.Debit(amount);
+        debitAccount.Credit(amount);
 
         accounts.Update(creditAccount);
         accounts.Update(debitAccount);
